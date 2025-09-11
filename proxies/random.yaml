@@ -1,21 +1,4 @@
 proxies:
-  - name: "139 ð­ð° HONG KONG TELECOMMUNICATIONS  HKT  LIMITED MASS INTERNET WS CDN NTLS"
-    type: vmess
-    server: quiz.int.vidio.com
-    port: 80
-    uuid: 93fb69fc-77cf-11ee-85ee-f23c91369f2d
-    alterId: 0
-    cipher: auto
-    tls: false
-    servername: c004e6fe-t1i9s0-tm53cm-1ol97.hkt.tcpbbr.net
-    skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /
-      headers:
-        Host: c004e6fe-t1i9s0-tm53cm-1ol97.hkt.tcpbbr.net
-    interface-name: eth1
-    udp: true
   - name: "145 ð¸ð¬ AMAZON TECHNOLOGIES INC  WS CDN TLS"
     type: vmess
     server: quiz.int.vidio.com
@@ -31,5 +14,22 @@ proxies:
       path: /39cb4/
       headers:
         Host: singapore2.helloshuai.com
+    interface-name: eth1
+    udp: true
+  - name: "139 ð­ð° HONG KONG TELECOMMUNICATIONS  HKT  LIMITED MASS INTERNET WS CDN NTLS"
+    type: vmess
+    server: quiz.int.vidio.com
+    port: 80
+    uuid: 93fb69fc-77cf-11ee-85ee-f23c91369f2d
+    alterId: 0
+    cipher: auto
+    tls: false
+    servername: c004e6fe-t1i9s0-tm53cm-1ol97.hkt.tcpbbr.net
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /
+      headers:
+        Host: c004e6fe-t1i9s0-tm53cm-1ol97.hkt.tcpbbr.net
     interface-name: eth1
     udp: true
