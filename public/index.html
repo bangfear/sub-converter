@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sub Converter Pro + Multi-File Sync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #111827;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --btn-primary: #3b82f6;
+      --btn-success: #10b981;
+      --btn-dark: #1f2937;
+      --btn-danger: #ef4444;
+    }
+    .dark {
+      --bg: #111827;
+      --text: #f9fafb;
+      --card: #1f2937;
+      --border: #374151;
+      --btn-primary: #60a5fa;
+      --btn-success: #34d399;
+      --btn-dark: #e5e7eb;
+      --btn-danger: #f87171;
+    }
+    body {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      margin: 0;
+      transition: background 0.3s, color 0.3s;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--text);
+      margin-bottom: 12px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .btn-primary { background: var(--btn-primary); color: white; }
+    .btn-success { background: var(--btn-success); color: white; }
+    .btn-dark { background: var(--btn-dark); color: var(--text); }
+    .btn-danger { background: var(--btn-danger); color: white; }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .proxy-info h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+    }
+    .proxy-info p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    code {
+      background: rgba(0,0,0,0.05);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .dark code {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      background: var(--border);
+      margin-right: 4px;
+    }
+    .dark .tag {
+      background: #374151;
+    }
+    .alert {
+      padding: 12px;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 6px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .dark .alert {
+      background: #7c2d12;
+      color: white;
+      border-color: #f59e0b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 Sub Converter Pro + Multi-File Sync</h1>
+
+    <div class="controls">
+      <select id="interfaceSelect">
+        <option value="eth0">eth0</option>
+        <option value="eth1">eth1</option>
+        <option value="eth2">eth2</option>
+        <option value="usb0">usb0</option>
+        <option value="usb1">usb1</option>
+        <option value="wifi0">wifi0</option>
+      </select>
+
+      <select id="targetFile">
+        <option value="proxies/id.yaml">🇮🇩 Indonesia</option>
+        <option value="proxies/sg.yaml">🇸🇬 Singapore</option>
+        <option value="proxies/random.yaml">🎲 Random</option>
+      </select>
+
+      <button id="darkModeToggle" class="btn-dark">☀️ Light Mode</button>
+    </div>
+
+    <textarea id="input" placeholder="Paste VLESS, Trojan, VMess links here (one per line)"></textarea>
+    <div class="btn-group">
+      <button id="convertBtn" class="btn-primary">Convert to YAML</button>
+      <button id="copyAllBtn" class="btn-success" style="display:none">📋 Copy All YAML</button>
+      <button id="saveToGithubBtn" class="btn-success" style="display:none">💾 Save to Selected File</button>
+      <button id="autoSaveAllBtn" class="btn-primary" style="display:none">🤖 Auto-Save All</button>
+      <button id="clearIdBtn" class="btn-danger" style="display:none">🗑️ Clear ID</button>
+      <button id="clearSgBtn" class="btn-danger" style="display:none">🗑️ Clear SG</button>
+      <button id="clearRandomBtn" class="btn-danger" style="display:none">🗑️ Clear Random</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    // === Dark Mode Default + Save Preference ===
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode === 'true') {
+      document.body.classList.add('dark');
+      document.getElementById('darkModeToggle').textContent = '☀️ Light Mode';
+    } else {
+      document.body.classList.remove('dark');
+      document.getElementById('darkModeToggle').textContent = '🌙 Dark Mode';
+    }
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode', isDark);
+      darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    });
+
+    // === Parser Functions ===
+    function parseVLESS(uri) {
+      let [mainPart, fragment] = uri.replace('vless://', '').split('#');
+      let name = fragment ? decodeURIComponent(fragment) : 'Unnamed VLESS';
+      let [main, params] = mainPart.split('?');
+      let [uuid, serverPort] = main.split('@');
+      let [server, port] = serverPort.split(':');
+      let paramObj = {};
+      if (params) {
+        new URLSearchParams(params).forEach((v, k) => paramObj[k] = v);
+      }
+
+      return {
+        name,
+        type: 'vless',
+        server,
+        port: parseInt(port),
+        uuid,
+        tls: paramObj.security === 'tls',
+        servername: paramObj.sni || server,
+        network: paramObj.type || 'tcp',
+        ws_opts: paramObj.type === 'ws' ? {
+          path: paramObj.path || '/',
+          headers: { Host: paramObj.host || server }
+        } : null
+      };
+    }
+
+    function parseTrojan(uri) {
+      let [mainPart, fragment] = uri.replace('trojan://', '').split('#');
+      let name = fragment ? decodeURIComponent(fragment) : 'Unnamed Trojan';
+      let [main, params] = mainPart.split('?');
+      let [password, serverPort] = main.split('@');
+      let [server, port] = serverPort.split(':');
+      let paramObj = {};
+      if (params) {
+        new URLSearchParams(params).forEach((v, k) => paramObj[k] = v);
+      }
+
+      return {
+        name,
+        type: 'trojan',
+        server,
+        port: parseInt(port),
+        password,
+        sni: paramObj.sni || server,
+        network: paramObj.type || 'tcp',
+        ws_opts: paramObj.type === 'ws' ? {
+          path: paramObj.path || '/',
+          headers: { Host: paramObj.host || server }
+        } : null
+      };
+    }
+
+    function parseVMess(uri) {
+      let jsonStr = atob(uri.replace('vmess://', ''));
+      let data;
+      try {
+        data = JSON.parse(jsonStr);
+      } catch {
+        return null;
+      }
+
+      return {
+        name: data.ps || 'Unnamed VMess',
+        type: 'vmess',
+        server: data.add,
+        port: parseInt(data.port),
+        uuid: data.id,
+        alterId: data.aid ? parseInt(data.aid) : 0,
+        cipher: data.scy || 'auto',
+        tls: data.tls === 'tls',
+        network: data.net || 'tcp',
+        ws_opts: data.net === 'ws' ? {
+          path: data.path || '/',
+          headers: { Host: data.host || data.add }
+        } : null,
+        servername: data.sni || data.add
+      };
+    }
+
+    function parseURI(uri) {
+      if (uri.startsWith('vless://')) return parseVLESS(uri);
+      if (uri.startsWith('trojan://')) return parseTrojan(uri);
+      if (uri.startsWith('vmess://')) return parseVMess(uri);
+      return null;
+    }
+
+    function proxyToYaml(proxy, interfaceName) {
+      let yaml = `  - name: "${proxy.name}"\n`;
+      yaml += `    type: ${proxy.type}\n`;
+      yaml += `    server: ${proxy.server}\n`;
+      yaml += `    port: ${proxy.port}\n`;
+
+      if (proxy.type === 'vless' || proxy.type === 'vmess') {
+        yaml += `    uuid: ${proxy.uuid}\n`;
+      }
+      if (proxy.type === 'trojan') {
+        yaml += `    password: ${proxy.password}\n`;
+      }
+      if (proxy.type === 'vmess') {
+        yaml += `    alterId: ${proxy.alterId}\n`;
+        yaml += `    cipher: ${proxy.cipher}\n`;
+      }
+      if (proxy.tls !== undefined) {
+        yaml += `    tls: ${proxy.tls}\n`;
+        yaml += `    servername: ${proxy.servername}\n`;
+      }
+      if (proxy.sni !== undefined) {
+        yaml += `    sni: ${proxy.sni}\n`;
+      }
+      yaml += `    skip-cert-verify: true\n`;
+      yaml += `    network: ${proxy.network}\n`;
+
+      if (proxy.ws_opts) {
+        yaml += `    ws-opts:\n`;
+        yaml += `      path: ${proxy.ws_opts.path}\n`;
+        yaml += `      headers:\n`;
+        yaml += `        Host: ${proxy.ws_opts.headers.Host}\n`;
+      }
+
+      yaml += `    interface-name: ${interfaceName}\n`;
+      yaml += `    udp: true\n`;
+      return yaml;
+    }
+
+    // === Auto-Categorize berdasarkan Nama + IP ===
+    async function categorizeProxy(proxy) {
+      const name = proxy.name.toLowerCase();
+      if (name.includes('🇮🇩') || name.includes('indonesia') || name.includes('telkom') || name.includes('xl') || name.includes('axis') || name.includes('indosat')) {
+        return 'proxies/id.yaml';
+      }
+      if (name.includes('🇸🇬') || name.includes('singapore') || name.includes(' sg ') || name.includes('aws ap-southeast-1')) {
+        return 'proxies/sg.yaml';
+      }
+
+      try {
+        const ip = proxy.server;
+        const res = await fetch(`http://ip-api.com/json/${ip}?fields=countryCode`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.countryCode === 'ID') return 'proxies/id.yaml';
+          if (data.countryCode === 'SG') return 'proxies/sg.yaml';
+        }
+      } catch (e) {
+        console.log("Gagal deteksi IP:", e);
+      }
+
+      return 'proxies/random.yaml';
+    }
+
+    // === DOM Elements ===
+    const inputEl = document.getElementById('input');
+    const convertBtn = document.getElementById('convertBtn');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const saveToGithubBtn = document.getElementById('saveToGithubBtn');
+    const autoSaveAllBtn = document.getElementById('autoSaveAllBtn');
+    const clearIdBtn = document.getElementById('clearIdBtn');
+    const clearSgBtn = document.getElementById('clearSgBtn');
+    const clearRandomBtn = document.getElementById('clearRandomBtn');
+    const resultsEl = document.getElementById('results');
+    const interfaceSelect = document.getElementById('interfaceSelect');
+    const targetFileSelect = document.getElementById('targetFile');
+
+    let proxies = [];
+
+    convertBtn.addEventListener('click', async () => {
+      const lines = inputEl.value.split('\n').filter(x => x.trim());
+      proxies = lines.map(parseURI).filter(x => x !== null);
+
+      if (proxies.length === 0) {
+        resultsEl.innerHTML = '<p>No valid proxies found.</p>';
+        copyAllBtn.style.display = 'none';
+        saveToGithubBtn.style.display = 'none';
+        autoSaveAllBtn.style.display = 'none';
+        clearIdBtn.style.display = 'none';
+        clearSgBtn.style.display = 'none';
+        clearRandomBtn.style.display = 'none';
+        return;
+      }
+
+      for (let proxy of proxies) {
+        proxy.category = await categorizeProxy(proxy);
+        proxy.interface = interfaceSelect.value; // simpan interface
+      }
+
+      let allYaml = "proxies:\n";
+      let html = '';
+
+      proxies.forEach(proxy => {
+        const yaml = proxyToYaml(proxy, interfaceSelect.value);
+        allYaml += yaml;
+
+        html += `
+          <div class="card">
+            <div class="flex">
+              <div class="proxy-info">
+                <h3>${proxy.name}</h3>
+                <p>${proxy.type.toUpperCase()} • ${proxy.server}:${proxy.port}</p>
+                <p>
+                  <span class="tag">${proxy.category.split('/')[1].replace('.yaml', '').toUpperCase()}</span>
+                  <code>interface: ${interfaceSelect.value}</code>
+                </p>
+              </div>
+              <button class="btn-dark" onclick="copyText(\`${yaml.replace(/`/g, '\\`')}\`)">Copy</button>
+            </div>
+          </div>
+        `;
+      });
+
+      resultsEl.innerHTML = html;
+      copyAllBtn.style.display = 'inline-block';
+      saveToGithubBtn.style.display = 'inline-block';
+      autoSaveAllBtn.style.display = 'inline-block';
+      clearIdBtn.style.display = 'inline-block';
+      clearSgBtn.style.display = 'inline-block';
+      clearRandomBtn.style.display = 'inline-block';
+
+      copyAllBtn.onclick = () => copyText(allYaml);
+    });
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Copied to clipboard!');
+      });
+    }
+
+    // === Save to Selected File via API (NO TOKEN IN CLIENT!) ===
+    saveToGithubBtn.onclick = async () => {
+      const owner = "GANTI-DENGAN-USERNAME"; // ← GANTI!
+      const repo = "GANTI-DENGAN-REPO";      // ← GANTI!
+      const filename = targetFileSelect.value;
+
+      const res = await fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          proxies: proxies,
+          filename: filename,
+          owner: owner,
+          repo: repo
+        })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert(`✅ Berhasil disimpan ke ${filename}!\n\nLink untuk OpenClash:\n${result.url}`);
+      } else {
+        alert("❌ Gagal: " + result.error);
+      }
+    };
+
+    // === Auto-Save All via API ===
+    autoSaveAllBtn.onclick = async () => {
+      const owner = "GANTI-DENGAN-USERNAME"; // ← GANTI!
+      const repo = "GANTI-DENGAN-REPO";      // ← GANTI!
+
+      const groups = {
+        'proxies/id.yaml': [],
+        'proxies/sg.yaml': [],
+        'proxies/random.yaml': []
+      };
+
+      for (let proxy of proxies) {
+        groups[proxy.category].push(proxy);
+      }
+
+      let successCount = 0;
+      for (let [filename, proxyList] of Object.entries(groups)) {
+        if (proxyList.length === 0) continue;
+
+        const res = await fetch('/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            proxies: proxyList,
+            filename: filename,
+            owner: owner,
+            repo: repo
+          })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          successCount++;
+          console.log(`✅ ${filename} updated`);
+        } else {
+          console.log(`❌ ${filename} failed:`, result.error);
+        }
+      }
+
+      alert(`✅ ${successCount} file berhasil di-update!`);
+    };
+
+    // === Clear via API (kita buat fungsi terpisah) ===
+    async function clearFile(filename) {
+      const owner = "GANTI-DENGAN-USERNAME";
+      const repo = "GANTI-DENGAN-REPO";
+
+      const res = await fetch('/api/clear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename, owner, repo })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        alert(`✅ ${filename} berhasil dikosongkan!`);
+      } else {
+        alert("❌ Gagal: " + result.error);
+      }
+    }
+
+    clearIdBtn.onclick = () => clearFile('proxies/id.yaml');
+    clearSgBtn.onclick = () => clearFile('proxies/sg.yaml');
+    clearRandomBtn.onclick = () => clearFile('proxies/random.yaml');
+  </script>
+</body>
+</html>
