@@ -429,8 +429,8 @@
 
     // === Save to Selected File via API (NO TOKEN IN CLIENT!) ===
     saveToGithubBtn.onclick = async () => {
-      const owner = "GANTI-DENGAN-USERNAME"; // ← GANTI!
-      const repo = "GANTI-DENGAN-REPO";      // ← GANTI!
+      const owner = "bangfear"; // ← GANTI!
+      const repo = "sub-converter";      // ← GANTI!
       const filename = targetFileSelect.value;
 
       const res = await fetch('/api/save', {
@@ -454,8 +454,8 @@
 
     // === Auto-Save All via API ===
     autoSaveAllBtn.onclick = async () => {
-      const owner = "GANTI-DENGAN-USERNAME"; // ← GANTI!
-      const repo = "GANTI-DENGAN-REPO";      // ← GANTI!
+      const owner = "bangfear"; // ← GANTI!
+      const repo = "sub-converter";      // ← GANTI!
 
       const groups = {
         'proxies/id.yaml': [],
