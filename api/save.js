@@ -5,7 +5,6 @@ export default async function handler(req, res) {
 
   const { proxies, filename, owner, repo } = req.body;
 
-  // Ambil token dari Environment Variable — AMAN!
   const token = process.env.GITHUB_TOKEN;
   if (!token) {
     return res.status(500).json({ error: 'GitHub token not configured in Vercel' });
@@ -13,7 +12,8 @@ export default async function handler(req, res) {
 
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filename}`;
 
-  // Baca file lama untuk dapat SHA
+  // 1. Baca file lama (jika ada)
+  let oldProxies = [];
   let sha = "";
   try {
     const resHead = await fetch(url, {
@@ -22,14 +22,48 @@ export default async function handler(req, res) {
     if (resHead.ok) {
       const data = await resHead.json();
       sha = data.sha;
+      const oldContent = Buffer.from(data.content, 'base64').toString('utf8');
+      // Parse YAML lama — ambil array proxies
+      const lines = oldContent.split('\n');
+      let inProxies = false;
+      let currentProxy = null;
+      for (let line of lines) {
+        if (line.trim() === 'proxies:') {
+          inProxies = true;
+          continue;
+        }
+        if (inProxies && line.trim().startsWith('- name:')) {
+          if (currentProxy) oldProxies.push(currentProxy);
+          currentProxy = { name: line.split('"')[1] || 'Unnamed' };
+        } else if (inProxies && currentProxy && line.trim().startsWith('type:')) {
+          currentProxy.type = line.split(':')[1].trim();
+        } else if (inProxies && currentProxy && line.trim().startsWith('server:')) {
+          currentProxy.server = line.split(':')[1].trim();
+        } else if (inProxies && currentProxy && line.trim().startsWith('port:')) {
+          currentProxy.port = parseInt(line.split(':')[1].trim());
+        }
+        // Tambahkan field lain jika perlu
+      }
+      if (currentProxy) oldProxies.push(currentProxy);
     }
   } catch (e) {
-    console.log("File belum ada:", e);
+    console.log("File belum ada atau error baca:", e);
   }
 
-  // Generate YAML
+  // 2. Gabung proxy lama + baru
+  const allProxies = [...oldProxies, ...proxies];
+
+  // 3. Hapus duplikat berdasarkan name
+  const seen = new Set();
+  const uniqueProxies = allProxies.filter(proxy => {
+    if (seen.has(proxy.name)) return false;
+    seen.add(proxy.name);
+    return true;
+  });
+
+  // 4. Generate YAML baru
   let yaml = "proxies:\n";
-  proxies.forEach(proxy => {
+  uniqueProxies.forEach(proxy => {
     yaml += `  - name: "${proxy.name}"\n`;
     yaml += `    type: ${proxy.type}\n`;
     yaml += `    server: ${proxy.server}\n`;
@@ -57,11 +91,12 @@ export default async function handler(req, res) {
     yaml += `    udp: true\n`;
   });
 
+  // 5. Simpan ke GitHub
   const content = Buffer.from(yaml).toString('base64');
   const payload = {
-    message: `Update ${filename} via Sub Converter`,
+    message: `Update ${filename} via Sub Converter (merge)`,
     content: content,
-    sha: sha
+    sha: sha // penting! tanpa ini, GitHub akan reject
   };
 
   const githubRes = await fetch(url, {
