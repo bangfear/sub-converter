@@ -1,1 +1,15 @@
-
+proxies:
+  - name: "150 🇸🇬 ORACLE CORPORATION WS CDN TLS"
+    type: trojan
+    server: quiz.int.vidio.com
+    port: 443
+    password: f282b878-8711-45a1-8c69-5564172123c1
+    sni: aio.zipzap.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /aioproxybot/129.150.49.58-18650
+      headers:
+        Host: aio.zipzap.biz.id
+    interface-name: eth1
+    udp: true
