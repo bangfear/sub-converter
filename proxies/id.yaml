@@ -1,1 +1,151 @@
-
+proxies:
+  - name: "1 🇮🇩 CV Rumahweb Indonesia WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /203.194.112.119-2053
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "2 🇮🇩 Amazon.com WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /43.218.77.16-443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "3 🇮🇩 First Cagayan Converge Data Center Inc. WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /203.194.112.119-8443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "4 🇮🇩 Amazon.com WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /43.218.77.16-1443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "5 🇮🇩 Amazoncom Inc WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /43.218.77.16-443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "6 🇮🇩 Amazoncom WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /43.218.77.16-1443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "7 🇮🇩 21F Ciputra World 1 DBS Tower JalanProf DR Satrio Kav 35 Jakarta 12940 Indonesia WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /149.129.250.8-443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "8 🇮🇩 Amazoncom WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /43.218.77.16-443
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "9 🇮🇩 First Cagayan Converge Data Center Inc. WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /203.194.112.119-2053
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "10 🇮🇩 PT Telekomunikasi Indonesia WS TLS [nautica]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f8594459-9605-4a47-808f-472a9370f384
+    tls: true
+    servername: nautica.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /36.95.152.58-12137
+      headers:
+        Host: nautica.krikkrik.tech
+    interface-name: eth1
+    udp: true
