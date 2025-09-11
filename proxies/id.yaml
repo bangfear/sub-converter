@@ -3,40 +3,116 @@ proxies:
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
-    tls: true
-    servername: id1.foolvpn.me
+    uuid: undefined
     skip-cert-verify: true
-    network: grpc
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "2 ✨ 🇮🇩 ARENHOST WS CDN TLS"
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
-    tls: true
-    servername: id1.foolvpn.me
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /vless
-      headers:
-        Host: id1.foolvpn.me
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "1 ✨ 🇮🇩 ARENHOST WS CDN NTLS"
     type: vless
     server: quiz.int.vidio.com
     port: 80
-    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
-    tls: false
-    servername: quiz.int.vidio.com
+    uuid: undefined
+    skip-cert-verify: true
+    network: undefined
+    interface-name: undefined
+    udp: true
+  - name: "🇮🇩 (ID) PT Telekomunikasi Indonesia"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: dec89b62-1123-4fc3-93c9-bf1345cc1584
+    tls: true
+    servername: quiz.int.vidio.com.joss.krikkrik.tech
     skip-cert-verify: true
     network: ws
     ws-opts:
-      path: /vless
+      path: /Free-VPN-CF-Geo-Project/36.95.152.58=12137
       headers:
-        Host: id1.foolvpn.me
+        Host: quiz.int.vidio.com.joss.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 (ID) Amazon.com"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 933f89c1-4279-4389-abe9-3023708ce01b
+    tls: true
+    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /Free-VPN-CF-Geo-Project/43.218.77.16=1443
+      headers:
+        Host: quiz.int.vidio.com.joss.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 (ID) Amazoncom"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: bd3b16a9-addf-4b3f-a6cf-e2961a26e78d
+    tls: true
+    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /Free-VPN-CF-Geo-Project/43.218.77.16=1443
+      headers:
+        Host: quiz.int.vidio.com.joss.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 (ID) First Cagayan Converge Data Center Inc."
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 1d1d7e20-4767-46f1-b185-a576b3059794
+    tls: true
+    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /Free-VPN-CF-Geo-Project/203.194.112.119=2053
+      headers:
+        Host: quiz.int.vidio.com.joss.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 (ID) PT Telkom Indonesia"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 574fefb2-5c5a-42ac-877b-3e2dc51a2980
+    tls: true
+    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /Free-VPN-CF-Geo-Project/36.95.152.58=12137
+      headers:
+        Host: quiz.int.vidio.com.joss.krikkrik.tech
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 (ID) Amazoncom Inc"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 14d0ee97-55d4-4ae0-a8cb-ce6430e330b7
+    tls: true
+    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /Free-VPN-CF-Geo-Project/43.218.77.16=1443
+      headers:
+        Host: quiz.int.vidio.com.joss.krikkrik.tech
     interface-name: eth1
     udp: true
