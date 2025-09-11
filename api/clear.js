@@ -10,6 +10,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'GitHub token not configured' });
   }
 
+  // ✅ PERBAIKAN: HAPUS SPASI DI SINI!
   const url = `https://api.github.com/repos/${owner}/${repo}/contents/${filename}`;
 
   let sha = "";
