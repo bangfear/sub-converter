@@ -12,89 +12,68 @@ proxies:
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: 145976ec-5204-4bc6-bcf0-ebbc5adb80a0
-    tls: true
-    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /Free-VPN-CF-Geo-Project/103.195.191.55=443
-      headers:
-        Host: quiz.int.vidio.com.joss.krikkrik.tech
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "🇸🇬 (SG) DigitalOcean"
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: adb49aaf-1493-4355-939f-fc4235211ea9
-    tls: true
-    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /Free-VPN-CF-Geo-Project/104.248.145.216=443
-      headers:
-        Host: quiz.int.vidio.com.joss.krikkrik.tech
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "🇸🇬 (SG) 16 COLLYER QUAY"
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: 7b590c9a-a56d-4931-8d4a-11a043cc33be
-    tls: true
-    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /Free-VPN-CF-Geo-Project/124.156.202.172=443
-      headers:
-        Host: quiz.int.vidio.com.joss.krikkrik.tech
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "🇸🇬 (SG) Oracle Corporation"
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: be53ff36-d6f5-41a3-a2e0-ca16bced9777
-    tls: true
-    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /Free-VPN-CF-Geo-Project/129.150.36.188=53435
-      headers:
-        Host: quiz.int.vidio.com.joss.krikkrik.tech
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "🇸🇬 (SG) 6 COLLYER QUAY"
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: fdd4a5e4-e675-4d96-a6c0-b6b425708acb
-    tls: true
-    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /Free-VPN-CF-Geo-Project/129.226.150.167=443
-      headers:
-        Host: quiz.int.vidio.com.joss.krikkrik.tech
-    interface-name: eth1
+    network: undefined
+    interface-name: undefined
     udp: true
   - name: "🇸🇬 (SG) Amazon Data Services Singapore"
     type: vless
     server: quiz.int.vidio.com
     port: 443
-    uuid: 2087ae08-4a05-43fb-a10a-bbdee1001c2d
+    uuid: undefined
+    skip-cert-verify: true
+    network: undefined
+    interface-name: undefined
+    udp: true
+  - name: "1 🇮🇩 PT Pusat Media Indonesia WS TLS [nautica]"
+    type: vless
+    server: nautica.krikkrik.tech
+    port: 443
+    uuid: 422a249f-e804-467f-8737-58a6386553b6
     tls: true
-    servername: quiz.int.vidio.com.joss.krikkrik.tech
+    servername: nautica.krikkrik.tech
     skip-cert-verify: true
     network: ws
     ws-opts:
-      path: /Free-VPN-CF-Geo-Project/13.250.131.37=443
+      path: /103.6.207.108-8080
       headers:
-        Host: quiz.int.vidio.com.joss.krikkrik.tech
-    interface-name: eth1
+        Host: nautica.krikkrik.tech
+    interface-name: eth0
     udp: true
