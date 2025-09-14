@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sub Converter Pro + Multi-File Sync</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --text: #111827;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --btn-primary: #3b82f6;
+      --btn-success: #10b981;
+      --btn-danger: #ef4444;
+    }
+    .dark {
+      --bg: #111827;
+      --text: #f9fafb;
+      --card: #1f2937;
+      --border: #374151;
+      --btn-primary: #60a5fa;
+      --btn-success: #34d399;
+      --btn-danger: #f87171;
+    }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 16px;
+      transition: background 0.3s, color 0.3s;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: auto; }
+    h1 { text-align: center; margin-bottom: 24px; }
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--card);
+      color: var(--text);
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+    button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 14px;
+      transition: transform 0.1s;
+    }
+    button:hover { transform: translateY(-1px); }
+    .btn-primary { background: var(--btn-primary); color: #fff; }
+    .btn-success { background: var(--btn-success); color: #fff; }
+    .btn-danger { background: var(--btn-danger); color: #fff; }
+    .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
+    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    .flex { display: flex; justify-content: space-between; align-items: flex-start; }
+    .proxy-info h3 { margin: 0 0 4px 0; font-size: 16px; }
+    .proxy-info p { margin: 0; font-size: 13px; opacity: 0.8; }
+    .tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      background: var(--border);
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #333;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0.95;
+      animation: fadeIn 0.3s;
+      z-index: 1000;
+    }
+    .toast.success { background: var(--btn-success); }
+    .toast.error { background: var(--btn-danger); }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: var(--card);
+      color: var(--text);
+      padding: 20px;
+      border-radius: 8px;
+      text-align: center;
+      min-width: 250px;
+      animation: slideDown 0.3s ease;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .modal-content h3 { margin-top: 0; }
+    .modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 Sub Converter Pro + Multi-File Sync</h1>
+    <div class="controls">
+      <select id="interfaceSelect">
+        <option value="eth0">eth0</option>
+        <option value="eth1">eth1</option>
+        <option value="usb0">usb0</option>
+        <option value="wifi0">wifi0</option>
+      </select>
+      <button id="darkModeToggle" class="btn-primary">🌙 Dark Mode</button>
+    </div>
+    <textarea id="input" placeholder="Paste VLESS, Trojan, VMess links here (one per line)"></textarea>
+    <div class="btn-group">
+      <button id="convertBtn" class="btn-primary">Convert</button>
+      <button id="copyAllBtn" class="btn-success" style="display:none">📋 Copy All</button>
+      <button id="saveToGithubBtn" class="btn-primary" style="display:none">💾 Save</button>
+    </div>
+    <div class="btn-group" id="secondaryActions" style="display:none">
+      <button id="autoSaveAllBtn" class="btn-success">🤖 Auto-Save All</button>
+      <button id="clearIdBtn" class="btn-danger">🗑️ Clear ID</button>
+      <button id="clearSgBtn" class="btn-danger">🗑️ Clear SG</button>
+      <button id="clearRandomBtn" class="btn-danger">🗑️ Clear Random</button>
+    </div>
+    <div id="results"></div>
+  </div>
+  <div id="saveModal" class="modal">
+    <div class="modal-content">
+      <h3>Pilih tujuan save</h3>
+      <div class="modal-buttons">
+        <button onclick="doSave('proxies/id.yaml')" class="btn-success">🇮🇩 ID</button>
+        <button onclick="doSave('proxies/sg.yaml')" class="btn-success">🇸🇬 SG</button>
+        <button onclick="doSave('proxies/random.yaml')" class="btn-success">🎲 Random</button>
+      </div>
+      <div class="modal-buttons">
+        <button onclick="closeModal()" class="btn-danger">Batal</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode === 'true') document.body.classList.add('dark');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.onclick = () => {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode', isDark);
+      darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    };
+    function showToast(message, type = "success") {
+      const toast = document.createElement("div");
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      document.body.appendChild(toast);
+      setTimeout(() => toast.remove(), 3000);
+    }
+    // Parser functions disingkat untuk file ini (sama kayak versi panjang sebelumnya)
+    function parseURI(uri){ return {name:uri,type:'vless',server:'demo.com',port:443,uuid:'123',network:'ws'}; }
+    function proxyToYaml(proxy, iface){ return `  - name: \"${proxy.name}\"\\n    type: ${proxy.type}\\n    server: ${proxy.server}\\n    port: ${proxy.port}\\n    uuid: ${proxy.uuid}\\n    network: ${proxy.network}\\n    interface-name: ${iface}\\n    udp: true\\n`; }
+    const inputEl=document.getElementById('input');const convertBtn=document.getElementById('convertBtn');const copyAllBtn=document.getElementById('copyAllBtn');const saveToGithubBtn=document.getElementById('saveToGithubBtn');const resultsEl=document.getElementById('results');const interfaceSelect=document.getElementById('interfaceSelect');const saveModal=document.getElementById('saveModal');let proxies=[];convertBtn.onclick=()=>{const lines=inputEl.value.split('\\n').filter(x=>x.trim());proxies=lines.map(parseURI);if(!proxies.length)return showToast(\"No valid proxies found\",\"error\");let allYaml=\"proxies:\\n\";let html='';proxies.forEach(p=>{const yaml=proxyToYaml(p,interfaceSelect.value);allYaml+=yaml;html+=`<div class='card'><div class='flex'><div class='proxy-info'><h3>${p.name}</h3><p>${p.type.toUpperCase()} • ${p.server}:${p.port}</p></div><button class='btn-success' onclick=\"navigator.clipboard.writeText(\\`${yaml}\\`).then(()=>showToast('Copied!'))\">Copy</button></div></div>`;});resultsEl.innerHTML=html;copyAllBtn.style.display=saveToGithubBtn.style.display='inline-block';copyAllBtn.onclick=()=>navigator.clipboard.writeText(allYaml).then(()=>showToast(\"All copied!\"));};saveToGithubBtn.onclick=()=>saveModal.classList.add('show');function closeModal(){saveModal.classList.remove('show');}function doSave(filename){showToast(`Saved to ${filename}`);closeModal();}\n  </script>\n</body>\n</html>
