@@ -37,14 +37,8 @@
       font-size: 15px;
       line-height: 1.6;
     }
-    .container {
-      max-width: 900px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 24px;
-    }
+    .container { max-width: 900px; margin: auto; }
+    h1 { text-align: center; margin-bottom: 24px; }
     textarea {
       width: 100%;
       height: 120px;
@@ -99,6 +93,7 @@
       font-size: 14px;
       opacity: 0.95;
       animation: fadeIn 0.3s;
+      z-index: 1000;
     }
     .toast.success { background: var(--btn-success); }
     .toast.error { background: var(--btn-danger); }
@@ -143,7 +138,7 @@
   </div>
 
   <script>
-    // === Dark Mode Init ===
+    // === Dark Mode ===
     const savedMode = localStorage.getItem('darkMode');
     if (savedMode === 'true') document.body.classList.add('dark');
     const darkModeToggle = document.getElementById('darkModeToggle');
@@ -161,16 +156,148 @@
       setTimeout(() => toast.remove(), 3000);
     }
 
-    // Dummy conversion for demo
-    document.getElementById('convertBtn').onclick = () => {
-      const input = document.getElementById('input').value.trim();
-      if (!input) return showToast("No input found", "error");
-      const resultsEl = document.getElementById('results');
-      resultsEl.innerHTML = `<div class="card"><div class="flex"><div class="proxy-info"><h3>Example Proxy</h3><p>VMESS • demo.server:443</p><p><span class="tag">ID</span></p></div><button class="btn-success" onclick="navigator.clipboard.writeText('demo').then(()=>showToast('Copied!'))">Copy</button></div></div>`;
-      document.getElementById('copyAllBtn').style.display = 'inline-block';
-      document.getElementById('saveToGithubBtn').style.display = 'inline-block';
-      document.getElementById('secondaryActions').style.display = 'flex';
+    // === Parsing ===
+    function parseVLESS(uri) {
+      let [mainPart, fragment] = uri.replace('vless://', '').split('#');
+      let name = fragment ? decodeURIComponent(fragment) : 'Unnamed VLESS';
+      let [main, params] = mainPart.split('?');
+      let [uuid, serverPort] = main.split('@');
+      let [server, port] = serverPort.split(':');
+      let paramObj = {};
+      if (params) new URLSearchParams(params).forEach((v, k) => paramObj[k] = v);
+      return { name, type: 'vless', server, port: parseInt(port), uuid,
+        tls: paramObj.security === 'tls', servername: paramObj.sni || server,
+        network: paramObj.type || 'tcp',
+        ws_opts: paramObj.type === 'ws' ? { path: paramObj.path || '/', headers: { Host: paramObj.host || server } } : null };
     }
+
+    function parseTrojan(uri) {
+      let [mainPart, fragment] = uri.replace('trojan://', '').split('#');
+      let name = fragment ? decodeURIComponent(fragment) : 'Unnamed Trojan';
+      let [main, params] = mainPart.split('?');
+      let [password, serverPort] = main.split('@');
+      let [server, port] = serverPort.split(':');
+      let paramObj = {};
+      if (params) new URLSearchParams(params).forEach((v, k) => paramObj[k] = v);
+      return { name, type: 'trojan', server, port: parseInt(port), password,
+        sni: paramObj.sni || server, network: paramObj.type || 'tcp',
+        ws_opts: paramObj.type === 'ws' ? { path: paramObj.path || '/', headers: { Host: paramObj.host || server } } : null };
+    }
+
+    function parseVMess(uri) {
+      let jsonStr = atob(uri.replace('vmess://', ''));
+      let data; try { data = JSON.parse(jsonStr); } catch { return null; }
+      return { name: data.ps || 'Unnamed VMess', type: 'vmess', server: data.add,
+        port: parseInt(data.port), uuid: data.id, alterId: data.aid ? parseInt(data.aid) : 0,
+        cipher: data.scy || 'auto', tls: data.tls === 'tls', network: data.net || 'tcp',
+        ws_opts: data.net === 'ws' ? { path: data.path || '/', headers: { Host: data.host || data.add } } : null,
+        servername: data.sni || data.add };
+    }
+
+    function parseURI(uri) {
+      if (uri.startsWith('vless://')) return parseVLESS(uri);
+      if (uri.startsWith('trojan://')) return parseTrojan(uri);
+      if (uri.startsWith('vmess://')) return parseVMess(uri);
+      return null;
+    }
+
+    function proxyToYaml(proxy, interfaceName) {
+      let yaml = `  - name: "${proxy.name}"\n`;
+      yaml += `    type: ${proxy.type}\n`;
+      yaml += `    server: ${proxy.server}\n`;
+      yaml += `    port: ${proxy.port}\n`;
+      if (proxy.type === 'vless' || proxy.type === 'vmess') yaml += `    uuid: ${proxy.uuid}\n`;
+      if (proxy.type === 'trojan') yaml += `    password: ${proxy.password}\n`;
+      if (proxy.type === 'vmess') { yaml += `    alterId: ${proxy.alterId}\n    cipher: ${proxy.cipher}\n`; }
+      if (proxy.tls !== undefined) { yaml += `    tls: ${proxy.tls}\n    servername: ${proxy.servername}\n`; }
+      if (proxy.sni !== undefined) yaml += `    sni: ${proxy.sni}\n`;
+      yaml += `    skip-cert-verify: true\n    network: ${proxy.network}\n`;
+      if (proxy.ws_opts) yaml += `    ws-opts:\n      path: ${proxy.ws_opts.path}\n      headers:\n        Host: ${proxy.ws_opts.headers.Host}\n`;
+      yaml += `    interface-name: ${interfaceName}\n    udp: true\n`;
+      return yaml;
+    }
+
+    async function categorizeProxy(proxy) {
+      const name = proxy.name.toLowerCase();
+      if (name.includes('🇮🇩') || name.includes('indonesia')) return 'proxies/id.yaml';
+      if (name.includes('🇸🇬') || name.includes('singapore') || name.includes(' sg ')) return 'proxies/sg.yaml';
+      try {
+        const res = await fetch(`https://ip-api.com/json/${proxy.server}?fields=countryCode`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.countryCode === 'ID') return 'proxies/id.yaml';
+          if (data.countryCode === 'SG') return 'proxies/sg.yaml';
+        }
+      } catch {}
+      return 'proxies/random.yaml';
+    }
+
+    const inputEl = document.getElementById('input');
+    const convertBtn = document.getElementById('convertBtn');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const saveToGithubBtn = document.getElementById('saveToGithubBtn');
+    const autoSaveAllBtn = document.getElementById('autoSaveAllBtn');
+    const clearIdBtn = document.getElementById('clearIdBtn');
+    const clearSgBtn = document.getElementById('clearSgBtn');
+    const clearRandomBtn = document.getElementById('clearRandomBtn');
+    const resultsEl = document.getElementById('results');
+    const interfaceSelect = document.getElementById('interfaceSelect');
+    const targetFileSelect = document.getElementById('targetFile');
+
+    let proxies = [];
+
+    convertBtn.onclick = async () => {
+      const lines = inputEl.value.split('\n').filter(x => x.trim());
+      proxies = lines.map(parseURI).filter(x => x !== null);
+      if (!proxies.length) return showToast("No valid proxies found", "error");
+
+      for (let proxy of proxies) proxy.category = await categorizeProxy(proxy);
+      let allYaml = "proxies:\n";
+      let html = '';
+      proxies.forEach(proxy => {
+        const yaml = proxyToYaml(proxy, interfaceSelect.value);
+        allYaml += yaml;
+        html += `<div class="card"><div class="flex"><div class="proxy-info"><h3>${proxy.name}</h3><p>${proxy.type.toUpperCase()} • ${proxy.server}:${proxy.port}</p><p><span class="tag">${proxy.category.split('/')[1].replace('.yaml','').toUpperCase()}</span></p></div><button class="btn-success" onclick="navigator.clipboard.writeText(\`${yaml.replace(/`/g,'\\`')}\`).then(()=>showToast('Copied!'))">Copy</button></div></div>`;
+      });
+      resultsEl.innerHTML = html;
+      copyAllBtn.style.display = saveToGithubBtn.style.display = 'inline-block';
+      document.getElementById('secondaryActions').style.display = 'flex';
+      copyAllBtn.onclick = () => navigator.clipboard.writeText(allYaml).then(()=>showToast("All copied!"));
+    };
+
+    saveToGithubBtn.onclick = async () => {
+      const owner = "bangfear";
+      const repo = "sub-converter";
+      const filename = targetFileSelect.value;
+      const res = await fetch('/api/save', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ proxies, filename, owner, repo }) });
+      const result = await res.json();
+      if (result.success) showToast(`Saved to ${filename}`); else showToast("Save failed","error");
+    };
+
+    autoSaveAllBtn.onclick = async () => {
+      const owner = "bangfear";
+      const repo = "sub-converter";
+      const groups = { 'proxies/id.yaml': [], 'proxies/sg.yaml': [], 'proxies/random.yaml': [] };
+      for (let proxy of proxies) groups[proxy.category].push(proxy);
+      let successCount = 0;
+      for (let [filename, proxyList] of Object.entries(groups)) {
+        if (!proxyList.length) continue;
+        const res = await fetch('/api/save',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ proxies: proxyList, filename, owner, repo }) });
+        const result = await res.json();
+        if (result.success) successCount++;
+      }
+      showToast(`${successCount} files updated`);
+    };
+
+    async function clearFile(filename){
+      const owner = "bangfear"; const repo = "sub-converter";
+      const res = await fetch('/api/clear',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ filename, owner, repo }) });
+      const result = await res.json();
+      if (result.success) showToast(`${filename} cleared`); else showToast("Clear failed","error");
+    }
+    clearIdBtn.onclick=()=>clearFile('proxies/id.yaml');
+    clearSgBtn.onclick=()=>clearFile('proxies/sg.yaml');
+    clearRandomBtn.onclick=()=>clearFile('proxies/random.yaml');
   </script>
 </body>
 </html>
