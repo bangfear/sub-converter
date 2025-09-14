@@ -16,6 +16,7 @@
       --border: #e5e7eb;
       --btn-primary: #3b82f6;
       --btn-success: #10b981;
+      --btn-dark: #1f2937;
       --btn-danger: #ef4444;
     }
     .dark {
@@ -25,20 +26,30 @@
       --border: #374151;
       --btn-primary: #60a5fa;
       --btn-success: #34d399;
+      --btn-dark: #e5e7eb;
       --btn-danger: #f87171;
     }
     body {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       background: var(--bg);
       color: var(--text);
-      margin: 0;
       padding: 16px;
+      margin: 0;
       transition: background 0.3s, color 0.3s;
       font-size: 15px;
       line-height: 1.6;
     }
-    .container { max-width: 900px; margin: auto; }
-    h1 { text-align: center; margin-bottom: 24px; }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
     textarea {
       width: 100%;
       height: 120px;
@@ -48,6 +59,7 @@
       background: var(--card);
       color: var(--text);
       margin-bottom: 12px;
+      font-family: inherit;
       font-size: 14px;
     }
     button {
@@ -56,15 +68,21 @@
       border-radius: 6px;
       cursor: pointer;
       font-weight: 500;
+      margin-right: 8px;
+      margin-bottom: 8px;
       font-size: 14px;
-      transition: transform 0.1s;
     }
-    button:hover { transform: translateY(-1px); }
-    .btn-primary { background: var(--btn-primary); color: #fff; }
-    .btn-success { background: var(--btn-success); color: #fff; }
-    .btn-danger { background: var(--btn-danger); color: #fff; }
-    .controls { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px; }
-    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .btn-primary { background: var(--btn-primary); color: white; }
+    .btn-success { background: var(--btn-success); color: white; }
+    .btn-dark { background: var(--btn-dark); color: var(--text); }
+    .btn-danger { background: var(--btn-danger); color: white; }
+    .controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -72,121 +90,500 @@
       padding: 16px;
       margin-bottom: 16px;
     }
-    .flex { display: flex; justify-content: space-between; align-items: flex-start; }
-    .proxy-info h3 { margin: 0 0 4px 0; font-size: 16px; }
-    .proxy-info p { margin: 0; font-size: 13px; opacity: 0.8; }
+    .flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .proxy-info h3 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+    }
+    .proxy-info p {
+      margin: 0;
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    code {
+      background: rgba(0,0,0,0.05);
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .dark code {
+      background: rgba(255,255,255,0.1);
+    }
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+    }
     .tag {
       display: inline-block;
       padding: 2px 6px;
       border-radius: 4px;
       font-size: 12px;
       background: var(--border);
+      margin-right: 4px;
     }
+    .dark .tag {
+      background: #374151;
+    }
+    .alert {
+      padding: 12px;
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 6px;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+    .dark .alert {
+      background: #7c2d12;
+      color: white;
+      border-color: #f59e0b;
+    }
+  
+    /* Toast & Modal tambahan */
     .toast {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      background: #333;
+      background: rgba(0,0,0,0.85);
       color: #fff;
       padding: 8px 12px;
       border-radius: 6px;
       font-size: 14px;
-      opacity: 0.95;
-      animation: fadeIn 0.3s;
-      z-index: 1000;
+      z-index: 9999;
     }
-    .toast.success { background: var(--btn-success); }
-    .toast.error { background: var(--btn-danger); }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .toast.success { background: #10b981; }
+    .toast.error { background: #ef4444; }
+
     .modal {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      inset: 0;
       background: rgba(0,0,0,0.5);
-      display: flex;
+      display: none;
       align-items: center;
       justify-content: center;
-      z-index: 2000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      z-index: 10000;
     }
-    .modal.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content {
+    .modal.show { display: flex; }
+    .modal .modal-content {
       background: var(--card);
       color: var(--text);
-      padding: 20px;
+      padding: 18px;
       border-radius: 8px;
+      min-width: 260px;
       text-align: center;
-      min-width: 250px;
-      animation: slideDown 0.3s ease;
     }
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .modal-content h3 { margin-top: 0; }
-    .modal-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+    .modal .modal-buttons { display:flex; gap:8px; justify-content:center; margin-top:12px; }
+
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🔗 Sub Converter Pro + Multi-File Sync</h1>
+
     <div class="controls">
       <select id="interfaceSelect">
         <option value="eth0">eth0</option>
         <option value="eth1">eth1</option>
+        <option value="eth2">eth2</option>
         <option value="usb0">usb0</option>
+        <option value="usb1">usb1</option>
         <option value="wifi0">wifi0</option>
       </select>
-      <button id="darkModeToggle" class="btn-primary">🌙 Dark Mode</button>
+
+      <button id="darkModeToggle" class="btn-dark">☀️ Light Mode</button>
     </div>
+
     <textarea id="input" placeholder="Paste VLESS, Trojan, VMess links here (one per line)"></textarea>
     <div class="btn-group">
-      <button id="convertBtn" class="btn-primary">Convert</button>
-      <button id="copyAllBtn" class="btn-success" style="display:none">📋 Copy All</button>
-      <button id="saveToGithubBtn" class="btn-primary" style="display:none">💾 Save</button>
+      <button id="convertBtn" class="btn-primary">Convert to YAML</button>
+      <button id="copyAllBtn" class="btn-success" style="display:none">📋 Copy All YAML</button>
+      <button id="saveToGithubBtn" class="btn-success" style="display:none">💾 Save to Selected File</button>
+      <button id="autoSaveAllBtn" class="btn-primary" style="display:none">🤖 Auto-Save All</button>
+      <button id="clearIdBtn" class="btn-danger" style="display:none">🗑️ Clear ID</button>
+      <button id="clearSgBtn" class="btn-danger" style="display:none">🗑️ Clear SG</button>
+      <button id="clearRandomBtn" class="btn-danger" style="display:none">🗑️ Clear Random</button>
     </div>
-    <div class="btn-group" id="secondaryActions" style="display:none">
-      <button id="autoSaveAllBtn" class="btn-success">🤖 Auto-Save All</button>
-      <button id="clearIdBtn" class="btn-danger">🗑️ Clear ID</button>
-      <button id="clearSgBtn" class="btn-danger">🗑️ Clear SG</button>
-      <button id="clearRandomBtn" class="btn-danger">🗑️ Clear Random</button>
-    </div>
+
     <div id="results"></div>
   </div>
-  <div id="saveModal" class="modal">
-    <div class="modal-content">
-      <h3>Pilih tujuan save</h3>
+
+  <script>
+    // === Dark Mode Default + Save Preference ===
+    const savedMode = localStorage.getItem('darkMode');
+    if (savedMode === 'true') {
+      document.body.classList.add('dark');
+      document.getElementById('darkModeToggle').textContent = '☀️ Light Mode';
+    } else {
+      document.body.classList.remove('dark');
+      document.getElementById('darkModeToggle').textContent = '🌙 Dark Mode';
+    }
+
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode', isDark);
+      darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+    });
+
+    // === Parser Functions ===
+    function parseVLESS(uri) {
+      let [mainPart, fragment] = uri.replace('vless://', '').split('#');
+      let name = fragment ? decodeURIComponent(fragment) : 'Unnamed VLESS';
+      let [main, params] = mainPart.split('?');
+      let [uuid, serverPort] = main.split('@');
+      let [server, port] = serverPort.split(':');
+      let paramObj = {};
+      if (params) {
+        new URLSearchParams(params).forEach((v, k) => paramObj[k] = v);
+      }
+
+      return {
+        name,
+        type: 'vless',
+        server,
+        port: parseInt(port),
+        uuid,
+        tls: paramObj.security === 'tls',
+        servername: paramObj.sni || server,
+        network: paramObj.type || 'tcp',
+        ws_opts: paramObj.type === 'ws' ? {
+          path: paramObj.path || '/',
+          headers: { Host: paramObj.host || server }
+        } : null
+      };
+    }
+
+    function parseTrojan(uri) {
+      let [mainPart, fragment] = uri.replace('trojan://', '').split('#');
+      let name = fragment ? decodeURIComponent(fragment) : 'Unnamed Trojan';
+      let [main, params] = mainPart.split('?');
+      let [password, serverPort] = main.split('@');
+      let [server, port] = serverPort.split(':');
+      let paramObj = {};
+      if (params) {
+        new URLSearchParams(params).forEach((v, k) => paramObj[k] = v);
+      }
+
+      return {
+        name,
+        type: 'trojan',
+        server,
+        port: parseInt(port),
+        password,
+        sni: paramObj.sni || server,
+        network: paramObj.type || 'tcp',
+        ws_opts: paramObj.type === 'ws' ? {
+          path: paramObj.path || '/',
+          headers: { Host: paramObj.host || server }
+        } : null
+      };
+    }
+
+    function parseVMess(uri) {
+      let jsonStr = atob(uri.replace('vmess://', ''));
+      let data;
+      try {
+        data = JSON.parse(jsonStr);
+      } catch {
+        return null;
+      }
+
+      return {
+        name: data.ps || 'Unnamed VMess',
+        type: 'vmess',
+        server: data.add,
+        port: parseInt(data.port),
+        uuid: data.id,
+        alterId: data.aid ? parseInt(data.aid) : 0,
+        cipher: data.scy || 'auto',
+        tls: data.tls === 'tls',
+        network: data.net || 'tcp',
+        ws_opts: data.net === 'ws' ? {
+          path: data.path || '/',
+          headers: { Host: data.host || data.add }
+        } : null,
+        servername: data.sni || data.add
+      };
+    }
+
+    function parseURI(uri) {
+      if (uri.startsWith('vless://')) return parseVLESS(uri);
+      if (uri.startsWith('trojan://')) return parseTrojan(uri);
+      if (uri.startsWith('vmess://')) return parseVMess(uri);
+      return null;
+    }
+
+    function proxyToYaml(proxy, interfaceName) {
+      let yaml = `  - name: "${proxy.name}"\n`;
+      yaml += `    type: ${proxy.type}\n`;
+      yaml += `    server: ${proxy.server}\n`;
+      yaml += `    port: ${proxy.port}\n`;
+
+      if (proxy.type === 'vless' || proxy.type === 'vmess') {
+        yaml += `    uuid: ${proxy.uuid}\n`;
+      }
+      if (proxy.type === 'trojan') {
+        yaml += `    password: ${proxy.password}\n`;
+      }
+      if (proxy.type === 'vmess') {
+        yaml += `    alterId: ${proxy.alterId}\n`;
+        yaml += `    cipher: ${proxy.cipher}\n`;
+      }
+      if (proxy.tls !== undefined) {
+        yaml += `    tls: ${proxy.tls}\n`;
+        yaml += `    servername: ${proxy.servername}\n`;
+      }
+      if (proxy.sni !== undefined) {
+        yaml += `    sni: ${proxy.sni}\n`;
+      }
+      yaml += `    skip-cert-verify: true\n`;
+      yaml += `    network: ${proxy.network}\n`;
+
+      if (proxy.ws_opts) {
+        yaml += `    ws-opts:\n`;
+        yaml += `      path: ${proxy.ws_opts.path}\n`;
+        yaml += `      headers:\n`;
+        yaml += `        Host: ${proxy.ws_opts.headers.Host}\n`;
+      }
+
+      yaml += `    interface-name: ${interfaceName}\n`;
+      yaml += `    udp: true\n`;
+      return yaml;
+    }
+
+    // === Auto-Categorize berdasarkan Nama + IP ===
+    async function categorizeProxy(proxy) {
+      const name = proxy.name.toLowerCase();
+      if (name.includes('🇮🇩') || name.includes('indonesia') || name.includes('telkom') || name.includes('xl') || name.includes('axis') || name.includes('indosat')) {
+        return 'proxies/id.yaml';
+      }
+      if (name.includes('🇸🇬') || name.includes('singapore') || name.includes(' sg ') || name.includes('aws ap-southeast-1')) {
+        return 'proxies/sg.yaml';
+      }
+
+      try {
+        const ip = proxy.server;
+        const res = await fetch(`https://ip-api.com/json/${ip}?fields=countryCode`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.countryCode === 'ID') return 'proxies/id.yaml';
+          if (data.countryCode === 'SG') return 'proxies/sg.yaml';
+        }
+      } catch (e) {
+        console.log("Gagal deteksi IP:", e);
+      }
+
+      return 'proxies/random.yaml';
+    }
+
+    // === DOM Elements ===
+    const inputEl = document.getElementById('input');
+    const convertBtn = document.getElementById('convertBtn');
+    const copyAllBtn = document.getElementById('copyAllBtn');
+    const saveToGithubBtn = document.getElementById('saveToGithubBtn');
+    const autoSaveAllBtn = document.getElementById('autoSaveAllBtn');
+    const clearIdBtn = document.getElementById('clearIdBtn');
+    const clearSgBtn = document.getElementById('clearSgBtn');
+    const clearRandomBtn = document.getElementById('clearRandomBtn');
+    const resultsEl = document.getElementById('results');
+    const interfaceSelect = document.getElementById('interfaceSelect');
+    
+
+    let proxies = [];
+
+    convertBtn.addEventListener('click', async () => {
+      const lines = inputEl.value.split('\n').filter(x => x.trim());
+      proxies = lines.map(parseURI).filter(x => x !== null);
+
+      if (proxies.length === 0) {
+        resultsEl.innerHTML = '<p>No valid proxies found.</p>';
+        copyAllBtn.style.display = 'none';
+        saveToGithubBtn.style.display = 'none';
+        autoSaveAllBtn.style.display = 'none';
+        clearIdBtn.style.display = 'none';
+        clearSgBtn.style.display = 'none';
+        clearRandomBtn.style.display = 'none';
+        return;
+      }
+
+      for (let proxy of proxies) {
+        proxy.category = await categorizeProxy(proxy);
+        proxy.interface = interfaceSelect.value; // simpan interface
+      }
+
+      let allYaml = "proxies:\n";
+      let html = '';
+
+      proxies.forEach(proxy => {
+        const yaml = proxyToYaml(proxy, interfaceSelect.value);
+        allYaml += yaml;
+
+        html += `
+          <div class="card">
+            <div class="flex">
+              <div class="proxy-info">
+                <h3>${proxy.name}</h3>
+                <p>${proxy.type.toUpperCase()} • ${proxy.server}:${proxy.port}</p>
+                <p>
+                  <span class="tag">${proxy.category.split('/')[1].replace('.yaml', '').toUpperCase()}</span>
+                  <code>interface: ${interfaceSelect.value}</code>
+                </p>
+              </div>
+              <button class="btn-dark" onclick="copyText(\`${yaml.replace(/`/g, '\\`')}\`)">Copy</button>
+            </div>
+          </div>
+        `;
+      });
+
+      resultsEl.innerHTML = html;
+      copyAllBtn.style.display = 'inline-block';
+      saveToGithubBtn.style.display = 'inline-block';
+      autoSaveAllBtn.style.display = 'inline-block';
+      clearIdBtn.style.display = 'inline-block';
+      clearSgBtn.style.display = 'inline-block';
+      clearRandomBtn.style.display = 'inline-block';
+
+      copyAllBtn.onclick = () => copyText(allYaml);
+    });
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!')).catch(()=>showToast('Copy failed','error'));
+    });
+    }
+
+    // === Save to Selected File via API (NO TOKEN IN CLIENT!) ===
+    saveToGithubBtn.onclick = () => { document.getElementById('saveModal').classList.add('show'); document.getElementById('saveModal').setAttribute('aria-hidden','false'); };,
+        body: JSON.stringify({
+          proxies: proxies,
+          filename: filename,
+          owner: owner,
+          repo: repo
+        })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        showToast(`✅ Berhasil disimpan ke ${filename}!\n\nLink untuk OpenClash:\n${result.url}`);
+      } else {
+        showToast("❌ Gagal: " + result.error);
+      }
+    };
+
+    // === Auto-Save All via API ===
+    autoSaveAllBtn.onclick = async () => {
+      const owner = "bangfear"; // ← GANTI!
+      const repo = "sub-converter";      // ← GANTI!
+
+      const groups = {
+        'proxies/id.yaml': [],
+        'proxies/sg.yaml': [],
+        'proxies/random.yaml': []
+      };
+
+      for (let proxy of proxies) {
+        groups[proxy.category].push(proxy);
+      }
+
+      let successCount = 0;
+      for (let [filename, proxyList] of Object.entries(groups)) {
+        if (proxyList.length === 0) continue;
+
+        const res = await fetch('/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            proxies: proxyList,
+            filename: filename,
+            owner: owner,
+            repo: repo
+          })
+        });
+
+        const result = await res.json();
+        if (result.success) {
+          successCount++;
+          console.log(`✅ ${filename} updated`);
+        } else {
+          console.log(`❌ ${filename} failed:`, result.error);
+        }
+      }
+
+      showToast(`✅ ${successCount} file berhasil di-update!`);
+    };
+
+    // === Clear via API (kita buat fungsi terpisah) ===
+    async function clearFile(filename) {
+      const owner = "GANTI-DENGAN-USERNAME";
+      const repo = "GANTI-DENGAN-REPO";
+
+      const res = await fetch('/api/clear', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename, owner, repo })
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        showToast(`✅ ${filename} berhasil dikosongkan!`);
+      } else {
+        showToast("❌ Gagal: " + result.error);
+      }
+    }
+
+    clearIdBtn.onclick = () => clearFile('proxies/id.yaml');
+    clearSgBtn.onclick = () => clearFile('proxies/sg.yaml');
+    clearRandomBtn.onclick = () => clearFile('proxies/random.yaml');
+  </script>
+
+  <!-- Save Modal -->
+  <div id="saveModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="saveModalTitle">
+      <h3 id="saveModalTitle">Pilih tujuan save</h3>
       <div class="modal-buttons">
         <button onclick="doSave('proxies/id.yaml')" class="btn-success">🇮🇩 ID</button>
         <button onclick="doSave('proxies/sg.yaml')" class="btn-success">🇸🇬 SG</button>
         <button onclick="doSave('proxies/random.yaml')" class="btn-success">🎲 Random</button>
       </div>
-      <div class="modal-buttons">
+      <div class="modal-buttons" style="margin-top:10px;">
         <button onclick="closeModal()" class="btn-danger">Batal</button>
       </div>
     </div>
   </div>
+
+
   <script>
-    const savedMode = localStorage.getItem('darkMode');
-    if (savedMode === 'true') document.body.classList.add('dark');
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    darkModeToggle.onclick = () => {
-      const isDark = document.body.classList.toggle('dark');
-      localStorage.setItem('darkMode', isDark);
-      darkModeToggle.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
-    };
-    function showToast(message, type = "success") {
-      const toast = document.createElement("div");
-      toast.textContent = message;
-      toast.className = `toast ${type}`;
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 3000);
+    function showToast(message, type = 'success') {
+      const t = document.createElement('div');
+      t.className = 'toast ' + (type === 'error' ? 'error' : 'success');
+      t.textContent = message;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
     }
-    // Parser functions disingkat untuk file ini (sama kayak versi panjang sebelumnya)
-    function parseURI(uri){ return {name:uri,type:'vless',server:'demo.com',port:443,uuid:'123',network:'ws'}; }
-    function proxyToYaml(proxy, iface){ return `  - name: \"${proxy.name}\"\\n    type: ${proxy.type}\\n    server: ${proxy.server}\\n    port: ${proxy.port}\\n    uuid: ${proxy.uuid}\\n    network: ${proxy.network}\\n    interface-name: ${iface}\\n    udp: true\\n`; }
-    const inputEl=document.getElementById('input');const convertBtn=document.getElementById('convertBtn');const copyAllBtn=document.getElementById('copyAllBtn');const saveToGithubBtn=document.getElementById('saveToGithubBtn');const resultsEl=document.getElementById('results');const interfaceSelect=document.getElementById('interfaceSelect');const saveModal=document.getElementById('saveModal');let proxies=[];convertBtn.onclick=()=>{const lines=inputEl.value.split('\\n').filter(x=>x.trim());proxies=lines.map(parseURI);if(!proxies.length)return showToast(\"No valid proxies found\",\"error\");let allYaml=\"proxies:\\n\";let html='';proxies.forEach(p=>{const yaml=proxyToYaml(p,interfaceSelect.value);allYaml+=yaml;html+=`<div class='card'><div class='flex'><div class='proxy-info'><h3>${p.name}</h3><p>${p.type.toUpperCase()} • ${p.server}:${p.port}</p></div><button class='btn-success' onclick=\"navigator.clipboard.writeText(\\`${yaml}\\`).then(()=>showToast('Copied!'))\">Copy</button></div></div>`;});resultsEl.innerHTML=html;copyAllBtn.style.display=saveToGithubBtn.style.display='inline-block';copyAllBtn.onclick=()=>navigator.clipboard.writeText(allYaml).then(()=>showToast(\"All copied!\"));};saveToGithubBtn.onclick=()=>saveModal.classList.add('show');function closeModal(){saveModal.classList.remove('show');}function doSave(filename){showToast(`Saved to ${filename}`);closeModal();}\n  </script>\n</body>\n</html>
+
+    function closeModal() {
+      const m = document.getElementById('saveModal');
+      if (m) { m.classList.remove('show'); m.setAttribute('aria-hidden','true'); }
+    }
+
+    function doSave(filename) {
+      const owner = "bangfear"; // change as needed
+      const repo = "sub-converter";
+      fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ proxies: proxies, filename: filename, owner: owner, repo: repo })
+      }).then(r => r.json()).then(result => {
+        if (result.success) showToast('Saved to ' + filename);
+        else showToast('Save failed', 'error');
+        closeModal();
+      }).catch(() => { showToast('Save failed', 'error'); closeModal(); });
+    }
+  </script>
+
+</body>
+</html>
