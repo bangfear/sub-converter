@@ -25,14 +25,8 @@ proxies:
     type: vless
     server: nautica.krikkrik.tech
     port: 443
-    uuid: 422a249f-e804-467f-8737-58a6386553b6
-    tls: true
-    servername: nautica.krikkrik.tech
+    uuid: undefined
     skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /103.6.207.108-8080
-      headers:
-        Host: nautica.krikkrik.tech
+    network: undefined
     interface-name: undefined
     udp: true
