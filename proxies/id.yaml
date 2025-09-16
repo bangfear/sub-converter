@@ -1,1 +1,74 @@
-proxies: []
+proxies:
+  - name: "3 ✨ 🇮🇩 ARENHOST GRPC CDN TLS"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
+    tls: true
+    servername: id1.foolvpn.me
+    skip-cert-verify: true
+    network: grpc
+    interface-name: eth1
+    udp: true
+  - name: "2 ✨ 🇮🇩 ARENHOST WS CDN TLS"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
+    tls: true
+    servername: id1.foolvpn.me
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /vless
+      headers:
+        Host: id1.foolvpn.me
+    interface-name: eth1
+    udp: true
+  - name: "1 ✨ 🇮🇩 ARENHOST WS CDN NTLS"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 80
+    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
+    tls: false
+    servername: quiz.int.vidio.com
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /vless
+      headers:
+        Host: id1.foolvpn.me
+    interface-name: eth1
+    udp: true
+  - name: "59 ð¸ð¬ AMAZON TECHNOLOGIES INC  WS CDN TLS"
+    type: vmess
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 14a79148-3d75-41d6-a998-2be9edef88cb
+    alterId: 0
+    cipher: auto
+    tls: true
+    servername: singapore2.helloshuai.com
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /39cb4/
+      headers:
+        Host: singapore2.helloshuai.com
+    interface-name: eth1
+    udp: true
+  - name: "29 🇰🇷 ORACLE CORPORATION WS CDN TLS"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: d0298536-d670-4045-bbb1-ddd5ea68683e
+    tls: true
+    servername: azadnet-btq.pages.dev
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /azadnet-btq.pages.dev/?ed=2560&prot_type=vless
+      headers:
+        Host: azadnet-btq.pages.dev
+    interface-name: eth1
+    udp: true
