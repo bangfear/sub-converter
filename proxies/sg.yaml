@@ -1,1 +1,166 @@
-proxies: []
+proxies:
+  - name: "1 🇮🇩 INDO Internet VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /117.54.114.103-443
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "2 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.234.62-443
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "3 🇮🇩 CV. Rumahweb Indonesia VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /203.194.112.119-8443
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "4 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.232.163-443
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "5 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.232.163-74
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "6 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.231.191-444
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "7 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.234.166-12306
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "8 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.238.56-9377
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "9 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.238.52-9377
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "10 🇮🇩 Akamai Connected Cloud VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /172.232.234.62-9377
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
+  - name: "11 🇮🇩 Kaopu Cloud HK Limited VLESS/WS/TLS [zx]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: 11bd473b-abdc-4dc7-9414-91ce2ca329c8
+    tls: true
+    servername: zx.lulzx.biz.id
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /154.205.159.72-2053
+      headers:
+        Host: zx.lulzx.biz.id
+    interface-name: eth1
+    udp: true
