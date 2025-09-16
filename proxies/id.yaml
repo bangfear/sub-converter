@@ -3,14 +3,68 @@ proxies:
     type: vless
     server: quiz.int.vidio.com
     port: 80
-    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
-    tls: false
-    servername: quiz.int.vidio.com
+    uuid: undefined
+    skip-cert-verify: true
+    network: undefined
+    interface-name: undefined
+    udp: true
+  - name: "🇮🇩 Amazon.com WS TLS [43.218.77.16]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: fc60147e-76b8-4bc5-b691-90b2da79e3d2
+    tls: true
+    servername: nauticax.bangfear1.workers.dev
     skip-cert-verify: true
     network: ws
     ws-opts:
-      path: /vless
+      path: /43.218.77.16-1443
       headers:
-        Host: id1.foolvpn.me
+        Host: nauticax.bangfear1.workers.dev
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 PT Pusat Media Indonesia WS TLS [103.6.207.108]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: fc60147e-76b8-4bc5-b691-90b2da79e3d2
+    tls: true
+    servername: nauticax.bangfear1.workers.dev
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /103.6.207.108-8080
+      headers:
+        Host: nauticax.bangfear1.workers.dev
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 PT Telekomunikasi Indonesia WS TLS [36.95.152.58]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: fc60147e-76b8-4bc5-b691-90b2da79e3d2
+    tls: true
+    servername: nauticax.bangfear1.workers.dev
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /36.95.152.58-12137
+      headers:
+        Host: nauticax.bangfear1.workers.dev
+    interface-name: eth1
+    udp: true
+  - name: "🇮🇩 CV. Rumahweb Indonesia WS TLS [203.194.112.119]"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 443
+    uuid: fc60147e-76b8-4bc5-b691-90b2da79e3d2
+    tls: true
+    servername: nauticax.bangfear1.workers.dev
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /203.194.112.119-2053
+      headers:
+        Host: nauticax.bangfear1.workers.dev
     interface-name: eth1
     udp: true
