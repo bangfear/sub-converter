@@ -11,7 +11,7 @@ proxies:
     ws-opts:
       path: /203.194.112.119-2053
       headers:
-        Host: zx.zx.lulzx.biz.id
+        Host: zx.lulzx.biz.id
     interface-name: eth1
     udp: true
   - name: "2 🇮🇩 PT Telkom Indonesia VLESS/WS/TLS [zx]"
