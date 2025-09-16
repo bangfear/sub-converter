@@ -1,16 +1,1 @@
-proxies:
-  - name: "1 🇮🇩 PT Pusat Media Indonesia WS TLS [nautica]"
-    type: vless
-    server: nautica.krikkrik.tech
-    port: 443
-    uuid: 422a249f-e804-467f-8737-58a6386553b6
-    tls: true
-    servername: nautica.krikkrik.tech
-    skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: /103.6.207.108-8080
-      headers:
-        Host: nautica.krikkrik.tech
-    interface-name: eth1
-    udp: true
+proxies: []
