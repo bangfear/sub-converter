@@ -285,31 +285,32 @@
     }
 
     function parseVMess(uri) {
-      let jsonStr = atob(uri.replace('vmess://', ''));
-      let data;
-      try {
-        data = JSON.parse(jsonStr);
-      } catch {
-        return null;
-      }
+  let jsonStr = base64ToUtf8(uri.replace('vmess://', ''));
+  let data;
+  try {
+    data = JSON.parse(jsonStr);
+  } catch {
+    return null;
+  }
 
-      return {
-        name: data.ps || 'Unnamed VMess',
-        type: 'vmess',
-        server: data.add,
-        port: parseInt(data.port),
-        uuid: data.id,
-        alterId: data.aid ? parseInt(data.aid) : 0,
-        cipher: data.scy || 'auto',
-        tls: data.tls === 'tls',
-        network: data.net || 'tcp',
-        ws_opts: data.net === 'ws' ? {
-          path: data.path || '/',
-          headers: { Host: data.host || data.add }
-        } : null,
-        servername: data.sni || data.add
-      };
-    }
+  return {
+    name: data.ps || 'Unnamed VMess',
+    type: 'vmess',
+    server: data.add,
+    port: parseInt(data.port),
+    uuid: data.id,
+    alterId: data.aid ? parseInt(data.aid) : 0,
+    cipher: data.scy || 'auto',
+    tls: data.tls === 'tls',
+    network: data.net || 'tcp',
+    ws_opts: data.net === 'ws' ? {
+      path: data.path || '/',
+      headers: { Host: data.host || data.add }
+    } : null,
+    servername: data.sni || data.add
+  };
+}
+
 
     function parseURI(uri) {
       if (uri.startsWith('vless://')) return parseVLESS(uri);
