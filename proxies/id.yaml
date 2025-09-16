@@ -1,1 +1,16 @@
-proxies: []
+proxies:
+  - name: "1+✨+🇮🇩+ARENHOST+WS+CDN+NTLS"
+    type: vless
+    server: quiz.int.vidio.com
+    port: 80
+    uuid: f9a6c12c-c303-456e-9ddc-b485eea0aeb0
+    tls: false
+    servername: quiz.int.vidio.com
+    skip-cert-verify: true
+    network: ws
+    ws-opts:
+      path: /vless
+      headers:
+        Host: id1.foolvpn.me
+    interface-name: eth1
+    udp: true
